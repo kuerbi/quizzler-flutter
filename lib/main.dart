@@ -36,6 +36,20 @@ class _QuizPageState extends State<QuizPage> {
 
   int questionNumber = 0;
 
+  void answerQuestion(bool correct) {
+    bool correctAnswer = questions[questionNumber].correct;
+
+    if (correctAnswer == correct) {
+      print("User got it right");
+    } else {
+      print("User got it wrong");
+    }
+
+    setState(() {
+      questionNumber++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -72,17 +86,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer = questions[questionNumber].correct;
-
-                if (correctAnswer) {
-                  print("User got it right");
-                } else {
-                  print("User got it wrong");
-                }
-
-                setState(() {
-                  questionNumber++;
-                });
+                answerQuestion(true);
               },
             ),
           ),
@@ -100,17 +104,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnswer = questions[questionNumber].correct;
-
-                if (!correctAnswer) {
-                  print("User got it right");
-                } else {
-                  print("User got it wrong");
-                }
-
-                setState(() {
-                  questionNumber++;
-                });
+                answerQuestion(false);
               },
             ),
           ),
