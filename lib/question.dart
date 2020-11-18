@@ -1,9 +1,9 @@
 class Question {
   String text;
-  bool correct;
+  bool answer;
 
-  Question({
+  Question(
     this.text,
-    this.correct,
-  });
+    this.answer,
+  );
 }
