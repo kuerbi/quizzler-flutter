@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -30,20 +31,30 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  int questionNumber = 0;
+  void checkAnswer(bool userPickedAnswer) {
+    if (quizBrain.hasNextQuestion) {
+      bool correctAnswer = quizBrain.getQuestion().answer;
 
-  void answerQuestion(bool correct) {
-    bool correctAnswer = quizBrain.questions[questionNumber].answer;
+      setState(() {
+        if (correctAnswer == userPickedAnswer) {
+          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+        } else {
+          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+        }
 
-    if (correctAnswer == correct) {
-      print("User got it right");
+        quizBrain.nextQuestion();
+      });
     } else {
-      print("User got it wrong");
+      Alert(
+        context: context,
+        title: "Finished",
+        desc: "You've reached the end of the quiz",
+      ).show();
+      setState(() {
+        scoreKeeper.clear();
+        quizBrain.reset();
+      });
     }
-
-    setState(() {
-      questionNumber++;
-    });
   }
 
   @override
@@ -58,7 +69,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questions[questionNumber].text,
+                quizBrain.getQuestion().text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -82,7 +93,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                answerQuestion(true);
+                checkAnswer(true);
               },
             ),
           ),
@@ -100,7 +111,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                answerQuestion(false);
+                checkAnswer(false);
               },
             ),
           ),

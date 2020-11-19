@@ -28,6 +28,21 @@ class QuizBrain {
         'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         true),
   ];
+  int _questionNumber = 0;
 
-  List<Question> get questions => _questions;
+  void nextQuestion() {
+    if (hasNextQuestion) {
+      _questionNumber++;
+    }
+  }
+
+  Question getQuestion() {
+    return _questions[_questionNumber];
+  }
+
+  bool get hasNextQuestion => _questionNumber < _questions.length - 1;
+
+  void reset() {
+    _questionNumber = 0;
+  }
 }
